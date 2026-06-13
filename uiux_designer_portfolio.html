@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aria Mehta — UX Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F5F2ED;--surface:#fff;--text:#111;--text2:#555;--text3:#888;
+  --accent:#1A1AFF;--accent-light:#E8E8FF;--border:#E0DDD8;--dark:#0E0E0E;
+  --font-display:'Playfair Display',serif;--font-body:'DM Sans',sans-serif;--font-mono:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-body);line-height:1.6;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 5%;height:64px;display:flex;align-items:center;justify-content:space-between;transition:all .3s;background:rgba(245,242,237,0.9);backdrop-filter:blur(12px);border-bottom:1px solid transparent}
+nav.scrolled{border-bottom-color:var(--border);box-shadow:0 1px 0 var(--border)}
+.nav-logo{font-family:var(--font-display);font-size:18px;font-weight:500;color:var(--text);text-decoration:none;letter-spacing:-.3px}
+.nav-links{display:flex;gap:36px;list-style:none}
+.nav-links a{font-size:14px;font-weight:500;color:var(--text2);text-decoration:none;position:relative;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:var(--accent);transition:width .25s}
+.nav-links a:hover::after{width:100%}
+.nav-cta{background:var(--accent);color:#fff;font-family:var(--font-body);font-size:13px;font-weight:500;padding:9px 20px;border-radius:6px;border:none;cursor:pointer;transition:all .2s}
+.nav-cta:hover{background:#0000cc;transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:80px 5% 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px, rgba(26,26,255,.07) 1px, transparent 0);background-size:32px 32px;pointer-events:none}
+.hero-inner{display:grid;grid-template-columns:45% 55%;gap:64px;align-items:center;max-width:1280px;margin:0 auto;width:100%}
+.hero-left{animation:fadeUp .8s ease both}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:var(--accent-light);color:var(--accent);font-family:var(--font-mono);font-size:12px;font-weight:500;padding:6px 14px;border-radius:100px;margin-bottom:28px;letter-spacing:.3px}
+.hero-tag::before{content:'';width:7px;height:7px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+h1.hero-title{font-family:var(--font-display);font-size:clamp(44px,5vw,72px);line-height:1.1;font-weight:700;letter-spacing:-1.5px;color:var(--text);margin-bottom:20px}
+h1.hero-title em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:18px;color:var(--text2);line-height:1.7;max-width:480px;margin-bottom:36px}
+.hero-ctas{display:flex;gap:14px;align-items:center;margin-bottom:40px;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#fff;font-family:var(--font-body);font-size:15px;font-weight:500;padding:14px 28px;border-radius:6px;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:all .25s}
+.btn-primary:hover{background:#0000cc;transform:translateY(-2px);box-shadow:0 8px 24px rgba(26,26,255,.25)}
+.btn-ghost{background:transparent;color:var(--text);font-family:var(--font-body);font-size:15px;font-weight:500;padding:14px 28px;border-radius:6px;border:1.5px solid var(--border);cursor:pointer;text-decoration:none;display:inline-block;transition:all .25s}
+.btn-ghost:hover{border-color:var(--text);transform:translateY(-2px)}
+.hero-socials{display:flex;gap:20px;align-items:center}
+.hero-socials a{color:var(--text3);font-size:13px;font-family:var(--font-mono);text-decoration:none;transition:color .2s}
+.hero-socials a:hover{color:var(--accent)}
+.hero-right{animation:fadeUp .8s .15s ease both;position:relative}
+.hero-card{background:var(--surface);border-radius:20px;border:1px solid var(--border);overflow:hidden;transform:rotate(-1.5deg);box-shadow:0 24px 80px rgba(0,0,0,.08);transition:transform .4s}
+.hero-card:hover{transform:rotate(0deg) scale(1.01)}
+.hero-card-img{width:100%;height:320px;background:linear-gradient(135deg,#E8E8FF 0%,#f0f0ff 50%,#e0e0ff 100%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.mockup-screen{width:80%;max-width:340px;background:#fff;border-radius:12px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.12)}
+.mockup-bar{height:8px;background:var(--accent);border-radius:4px;margin-bottom:12px;width:60%}
+.mockup-line{height:6px;background:#f0f0f0;border-radius:3px;margin-bottom:8px}
+.mockup-line.w80{width:80%}.mockup-line.w60{width:60%}.mockup-line.w90{width:90%}.mockup-line.w40{width:40%}
+.mockup-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.mockup-block{height:48px;border-radius:8px;background:#f5f2ed}
+.mockup-block:first-child{background:var(--accent-light)}
+.hero-card-info{padding:20px 24px;display:flex;justify-content:space-between;align-items:center}
+.hero-card-title{font-size:15px;font-weight:600;color:var(--text)}
+.hero-card-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.hero-tool-tag{background:var(--dark);color:#fff;font-family:var(--font-mono);font-size:11px;padding:6px 12px;border-radius:100px}
+.hero-stat-row{position:absolute;bottom:-16px;right:24px;display:flex;gap:12px}
+.stat-pill{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 16px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+.stat-num{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text);display:block}
+.stat-lbl{font-size:11px;color:var(--text3);font-family:var(--font-mono)}
+
+/* MARQUEE */
+.marquee-section{background:var(--dark);padding:18px 0;overflow:hidden;margin-top:60px}
+.marquee-track{display:flex;gap:0;animation:marquee 20s linear infinite;white-space:nowrap}
+.marquee-track:hover{animation-play-state:paused}
+.marquee-item{font-family:var(--font-mono);font-size:12px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;padding:0 40px;border-right:1px solid #333}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* SECTIONS COMMON */
+.section{padding:100px 5%;max-width:1440px;margin:0 auto}
+.section-label{font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.section-label::before{content:'';width:28px;height:1px;background:var(--text3)}
+h2.section-title{font-family:var(--font-display);font-size:clamp(32px,4vw,52px);font-weight:700;line-height:1.15;letter-spacing:-1px;margin-bottom:48px;max-width:600px}
+
+/* WORK GRID */
+.work-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
+.project-card{border-radius:16px;overflow:hidden;background:var(--surface);border:1px solid var(--border);cursor:pointer;transition:all .3s;position:relative}
+.project-card:hover{transform:translateY(-4px);box-shadow:0 24px 60px rgba(0,0,0,.1)}
+.project-card.large{grid-column:span 7}
+.project-card.medium{grid-column:span 5}
+.project-card.third{grid-column:span 4}
+.project-thumb{position:relative;overflow:hidden}
+.project-thumb img,.project-thumb .thumb-bg{width:100%;display:block}
+.thumb-bg{height:240px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative}
+.project-card.large .thumb-bg{height:320px}
+.thumb-bg.p1{background:linear-gradient(135deg,#E8E8FF,#c8c8ff)}
+.thumb-bg.p2{background:linear-gradient(135deg,#F5E8FF,#ddc8ff)}
+.thumb-bg.p3{background:linear-gradient(135deg,#E8F5FF,#c8e0ff)}
+.thumb-bg.p4{background:linear-gradient(135deg,#E8FFE8,#c8f0c8)}
+.thumb-bg.p5{background:linear-gradient(135deg,#FFF5E8,#ffe0c8)}
+.project-thumb-inner{width:70%;margin:auto;background:#fff;border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,.1);overflow:hidden}
+.pti-bar{height:6px;margin-bottom:10px}
+.pti-content{padding:12px}
+.pti-line{height:5px;background:#f0f0f0;border-radius:3px;margin-bottom:6px}
+.project-overlay{position:absolute;inset:0;background:rgba(17,17,17,.9);opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.project-card:hover .project-overlay{opacity:1}
+.project-overlay h3{color:#fff;font-family:var(--font-display);font-size:20px;font-weight:500;margin-bottom:6px}
+.project-overlay p{color:rgba(255,255,255,.6);font-size:13px}
+.project-meta{padding:18px 20px;display:flex;justify-content:space-between;align-items:flex-start}
+.project-meta-left h3{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px}
+.project-meta-left p{font-size:12px;color:var(--text3)}
+.project-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.tag{background:#f0f0f0;color:var(--text2);font-family:var(--font-mono);font-size:10px;padding:4px 10px;border-radius:100px;letter-spacing:.5px}
+.project-year{font-family:var(--font-mono);font-size:12px;color:var(--text3)}
+
+/* ABOUT/PROCESS */
+.about-section{background:var(--surface);border-radius:24px;padding:72px;display:grid;grid-template-columns:45% 55%;gap:80px;align-items:start;position:relative;overflow:hidden}
+.about-section::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);background-size:24px 24px;opacity:.5;pointer-events:none}
+.about-text blockquote{font-family:var(--font-display);font-size:clamp(24px,3vw,38px);line-height:1.3;font-weight:500;font-style:italic;color:var(--text);margin-bottom:28px;letter-spacing:-.5px;position:relative;z-index:1}
+.about-text p{font-size:16px;color:var(--text2);line-height:1.8;margin-bottom:16px;position:relative;z-index:1}
+.process-steps{display:flex;flex-direction:column;gap:32px;position:relative;z-index:1}
+.process-step{display:flex;gap:20px;align-items:flex-start;padding:24px;border-radius:12px;transition:background .2s}
+.process-step:hover{background:var(--bg)}
+.step-num{font-family:var(--font-display);font-size:56px;font-weight:700;line-height:1;color:var(--accent-light);min-width:60px;letter-spacing:-2px;transition:color .2s}
+.process-step:hover .step-num{color:var(--accent)}
+.step-body h4{font-size:16px;font-weight:600;color:var(--text);margin-bottom:4px}
+.step-body p{font-size:14px;color:var(--text2);line-height:1.6}
+
+/* SKILLS */
+.skills-section{background:var(--dark);border-radius:24px;padding:64px;color:#fff}
+.skills-section .section-label{color:#555}
+.skills-section h2.section-title{color:#fff;max-width:none;margin-bottom:40px}
+.tools-grid{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:40px}
+.tool-chip{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:10px 18px;transition:all .2s;cursor:default}
+.tool-chip:hover{background:rgba(26,26,255,.2);border-color:var(--accent)}
+.tool-icon{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.tool-name{font-size:13px;font-weight:500;color:rgba(255,255,255,.8);font-family:var(--font-mono)}
+.skills-tags{display:flex;flex-wrap:wrap;gap:10px}
+.skill-tag{background:transparent;color:var(--accent);font-family:var(--font-mono);font-size:12px;padding:8px 16px;border-radius:100px;border:1px solid rgba(26,26,255,.3);letter-spacing:.5px;transition:all .2s}
+.skill-tag:hover{background:var(--accent);color:#fff}
+
+/* TESTIMONIALS */
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.testimonial-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;position:relative;transition:all .3s}
+.testimonial-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+.quote-mark{font-family:var(--font-display);font-size:80px;line-height:.8;color:var(--accent);margin-bottom:16px;display:block}
+.testimonial-card blockquote{font-family:var(--font-display);font-size:17px;font-style:italic;line-height:1.7;color:var(--text);margin-bottom:24px;font-weight:400}
+.testimonial-author{display:flex;align-items:center;gap:12px}
+.author-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:13px;color:#fff;flex-shrink:0}
+.author-name{font-size:14px;font-weight:600;color:var(--text)}
+.author-role{font-size:12px;color:var(--text3);font-family:var(--font-mono)}
+
+/* CTA BANNER */
+.cta-banner{background:var(--text);border-radius:24px;padding:80px;text-align:center;position:relative;overflow:hidden;margin:0 5%}
+.cta-banner::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 1px 1px, rgba(26,26,255,.15) 1px, transparent 0);background-size:32px 32px}
+.cta-banner h2{font-family:var(--font-display);font-size:clamp(36px,4vw,60px);color:#fff;line-height:1.15;letter-spacing:-1px;margin-bottom:16px;position:relative;z-index:1}
+.cta-banner p{color:rgba(255,255,255,.5);font-size:17px;margin-bottom:36px;position:relative;z-index:1}
+.cta-banner .btn-primary{font-size:16px;padding:16px 36px;position:relative;z-index:1}
+
+/* FOOTER */
+footer{padding:60px 5% 32px;max-width:1440px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--border)}
+.footer-brand p{font-family:var(--font-display);font-size:22px;font-weight:500;color:var(--text);margin-bottom:8px}
+.footer-brand span{font-size:14px;color:var(--text3)}
+.footer-links h4{font-family:var(--font-mono);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text3);margin-bottom:16px}
+.footer-links ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-links a{font-size:14px;color:var(--text2);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:var(--accent)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-family:var(--font-mono);font-size:11px;color:var(--text3);letter-spacing:.5px}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.reveal.visible{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-right{display:none}
+  .work-grid{grid-template-columns:1fr}
+  .project-card.large,.project-card.medium,.project-card.third{grid-column:span 1}
+  .about-section{grid-template-columns:1fr;padding:40px 32px;gap:40px}
+  .testimonials-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .cta-banner{padding:48px 32px}
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">Aria Mehta</a>
+  <ul class="nav-links">
+    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta">Let's Talk</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <span>Available for work</span>
+      </div>
+      <h1 class="hero-title">Designing<br>experiences<br>people <em>remember.</em></h1>
+      <p class="hero-sub">I craft interfaces where clarity meets delight — bridging user needs with business goals through research-driven design.</p>
+      <div class="hero-ctas">
+        <a href="#work" class="btn-primary">View Work →</a>
+        <a href="#" class="btn-ghost">Download CV</a>
+      </div>
+      <div class="hero-socials">
+        <a href="#">Dribbble</a>
+        <a href="#">Behance</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Read.cv</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="hero-card-img">
+          <div class="mockup-screen">
+            <div class="mockup-bar" style="background:var(--accent)"></div>
+            <div class="mockup-line w80"></div>
+            <div class="mockup-line w60"></div>
+            <div class="mockup-line w90"></div>
+            <div class="mockup-grid">
+              <div class="mockup-block"></div>
+              <div class="mockup-block"></div>
+              <div class="mockup-block" style="background:#f0f0f0"></div>
+              <div class="mockup-block" style="background:var(--accent-light)"></div>
+            </div>
+            <div class="mockup-line w40" style="margin-top:12px;background:var(--accent);height:8px;border-radius:4px"></div>
+          </div>
+        </div>
+        <div class="hero-card-info">
+          <div>
+            <div class="hero-card-title">FinFlow Dashboard</div>
+            <div class="hero-card-sub">Case Study · 2024</div>
+          </div>
+          <div class="hero-tool-tag">Figma · Research</div>
+        </div>
+      </div>
+      <div class="hero-stat-row">
+        <div class="stat-pill">
+          <span class="stat-num">24+</span>
+          <span class="stat-lbl">Projects</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">98%</span>
+          <span class="stat-lbl">Client Sat.</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-num">5yr</span>
+          <span class="stat-lbl">Experience</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marqueeTrack">
+    <span class="marquee-item">Figma</span>
+    <span class="marquee-item">UX Research</span>
+    <span class="marquee-item">Prototyping</span>
+    <span class="marquee-item">Design Systems</span>
+    <span class="marquee-item">Interaction Design</span>
+    <span class="marquee-item">Usability Testing</span>
+    <span class="marquee-item">Information Architecture</span>
+    <span class="marquee-item">User Flows</span>
+    <span class="marquee-item">Wireframing</span>
+    <span class="marquee-item">Motion Design</span>
+    <span class="marquee-item">Figma</span>
+    <span class="marquee-item">UX Research</span>
+    <span class="marquee-item">Prototyping</span>
+    <span class="marquee-item">Design Systems</span>
+    <span class="marquee-item">Interaction Design</span>
+    <span class="marquee-item">Usability Testing</span>
+    <span class="marquee-item">Information Architecture</span>
+    <span class="marquee-item">User Flows</span>
+    <span class="marquee-item">Wireframing</span>
+    <span class="marquee-item">Motion Design</span>
+  </div>
+</div>
+
+<!-- WORK -->
+<section class="section" id="work">
+  <div class="section-label">Selected Work — 2020–2024</div>
+  <h2 class="section-title">Work that ships<br>and sticks.</h2>
+  <div class="work-grid">
+    <!-- Large -->
+    <div class="project-card large reveal">
+      <div class="project-thumb">
+        <div class="thumb-bg p1">
+          <div class="project-thumb-inner">
+            <div class="pti-bar" style="background:var(--accent)"></div>
+            <div class="pti-content">
+              <div class="pti-line" style="width:70%"></div>
+              <div class="pti-line" style="width:50%"></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px">
+                <div style="height:32px;border-radius:6px;background:#f0f0f0"></div>
+                <div style="height:32px;border-radius:6px;background:var(--accent-light)"></div>
+                <div style="height:32px;border-radius:6px;background:#f0f0f0"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-overlay">
+          <h3>FinFlow — Banking Dashboard</h3>
+          <p>Redesigning financial clarity for 40K+ users · 2024</p>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-left">
+          <h3>FinFlow Banking Dashboard</h3>
+          <p>Product Design · End-to-end</p>
+          <div class="project-tags">
+            <span class="tag">Dashboard</span>
+            <span class="tag">FinTech</span>
+            <span class="tag">UX Research</span>
+          </div>
+        </div>
+        <span class="project-year">2024</span>
+      </div>
+    </div>
+    <!-- Medium -->
+    <div class="project-card medium reveal" style="transition-delay:.1s">
+      <div class="project-thumb">
+        <div class="thumb-bg p2">
+          <div class="project-thumb-inner" style="width:65%">
+            <div class="pti-bar" style="background:#9B59B6"></div>
+            <div class="pti-content">
+              <div style="display:flex;gap:6px;margin-bottom:8px">
+                <div style="width:28px;height:28px;border-radius:50%;background:#E8D5FF"></div>
+                <div style="flex:1">
+                  <div class="pti-line" style="width:80%;margin-bottom:4px"></div>
+                  <div class="pti-line" style="width:50%"></div>
+                </div>
+              </div>
+              <div class="pti-line"></div>
+            </div>
+          </div>
+        </div>
+        <div class="project-overlay">
+          <h3>Mindful — Wellness App</h3>
+          <p>iOS app design for mental wellness · 2024</p>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-left">
+          <h3>Mindful Wellness App</h3>
+          <p>Mobile App · iOS</p>
+          <div class="project-tags">
+            <span class="tag">Mobile</span>
+            <span class="tag">Health</span>
+          </div>
+        </div>
+        <span class="project-year">2024</span>
+      </div>
+    </div>
+    <!-- 3 thirds -->
+    <div class="project-card third reveal" style="transition-delay:.2s">
+      <div class="project-thumb">
+        <div class="thumb-bg p3">
+          <div class="project-thumb-inner">
+            <div class="pti-bar" style="background:#0066FF"></div>
+            <div class="pti-content">
+              <div class="pti-line" style="width:60%"></div>
+              <div style="height:40px;background:#E8F0FF;border-radius:6px;margin-top:8px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="project-overlay">
+          <h3>Orbit SaaS Platform</h3>
+          <p>B2B design system · 2023</p>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-left">
+          <h3>Orbit SaaS Platform</h3>
+          <div class="project-tags"><span class="tag">SaaS</span><span class="tag">B2B</span></div>
+        </div>
+        <span class="project-year">2023</span>
+      </div>
+    </div>
+    <div class="project-card third reveal" style="transition-delay:.3s">
+      <div class="project-thumb">
+        <div class="thumb-bg p4">
+          <div class="project-thumb-inner">
+            <div class="pti-bar" style="background:#22A45D"></div>
+            <div class="pti-content">
+              <div class="pti-line" style="width:80%"></div>
+              <div style="display:flex;gap:6px;margin-top:8px">
+                <div style="flex:1;height:36px;background:#E8FFE8;border-radius:6px"></div>
+                <div style="flex:1;height:36px;background:#c8f0c8;border-radius:6px"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="project-overlay">
+          <h3>Harvest E-commerce</h3>
+          <p>Organic food marketplace · 2023</p>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-left">
+          <h3>Harvest E-commerce</h3>
+          <div class="project-tags"><span class="tag">E-commerce</span><span class="tag">Web</span></div>
+        </div>
+        <span class="project-year">2023</span>
+      </div>
+    </div>
+    <div class="project-card third reveal" style="transition-delay:.4s">
+      <div class="project-thumb">
+        <div class="thumb-bg p5">
+          <div class="project-thumb-inner">
+            <div class="pti-bar" style="background:#FF6B35"></div>
+            <div class="pti-content">
+              <div class="pti-line" style="width:70%"></div>
+              <div style="height:40px;background:#FFF0E8;border-radius:6px;margin-top:8px"></div>
+            </div>
+          </div>
+        </div>
+        <div class="project-overlay">
+          <h3>Nomad Travel App</h3>
+          <p>Trip planning for digital nomads · 2022</p>
+        </div>
+      </div>
+      <div class="project-meta">
+        <div class="project-meta-left">
+          <h3>Nomad Travel App</h3>
+          <div class="project-tags"><span class="tag">Mobile</span><span class="tag">Travel</span></div>
+        </div>
+        <span class="project-year">2022</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT + PROCESS -->
+<section class="section" id="about">
+  <div class="about-section reveal">
+    <div class="about-text">
+      <div class="section-label" style="margin-bottom:24px">About</div>
+      <blockquote>"Good design is invisible. Great design makes you feel something."</blockquote>
+      <p>I'm a product designer with 5 years of experience turning complex problems into intuitive, beautiful experiences. I work at the intersection of research and craft.</p>
+      <p>Previously at Razorpay, Zomato, and multiple funded startups. I believe every pixel should serve a purpose — and I obsess over the ones that don't.</p>
+      <div style="margin-top:32px;display:flex;gap:32px">
+        <div>
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--accent)">24+</div>
+          <div style="font-size:13px;color:var(--text3);font-family:var(--font-mono)">Products shipped</div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--accent)">3M+</div>
+          <div style="font-size:13px;color:var(--text3);font-family:var(--font-mono)">Users impacted</div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--accent)">12</div>
+          <div style="font-size:13px;color:var(--text3);font-family:var(--font-mono)">Design awards</div>
+        </div>
+      </div>
+    </div>
+    <div id="process">
+      <div class="section-label" style="margin-bottom:24px">Process</div>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h4>Discover</h4>
+            <p>Deep-dive into user interviews, analytics, and market context. No assumptions, only evidence.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h4>Define</h4>
+            <p>Synthesize findings into clear problem statements and measurable design goals.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h4>Design</h4>
+            <p>Ideate, prototype, and iterate — from rough sketches to high-fidelity Figma flows.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h4>Deliver</h4>
+            <p>Hand off dev-ready specs, design systems, and stay engaged through to launch.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section" style="padding-top:0">
+  <div class="skills-section reveal">
+    <div class="section-label">Tools &amp; Skills</div>
+    <h2 class="section-title" style="color:#fff">Craft backed<br>by the right tools.</h2>
+    <div class="tools-grid">
+      <div class="tool-chip"><div class="tool-icon" style="background:#0ACF83">F</div><span class="tool-name">Figma</span></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:#FF6250">P</div><span class="tool-name">Protopie</span></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:#FF3366">M</div><span class="tool-name">Miro</span></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:#000">N</div><span class="tool-name">Notion</span></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:#FF6D00">M</div><span class="tool-name">Maze</span></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:#00C8FF">A</div><span class="tool-name">After Effects</span></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:#FF4F00">L</div><span class="tool-name">Lottie</span></div>
+      <div class="tool-chip"><div class="tool-icon" style="background:#1A1AFF">U</div><span class="tool-name">UserTesting</span></div>
+    </div>
+    <div class="skills-tags">
+      <span class="skill-tag">User Research</span>
+      <span class="skill-tag">Interaction Design</span>
+      <span class="skill-tag">Design Systems</span>
+      <span class="skill-tag">Prototyping</span>
+      <span class="skill-tag">Usability Testing</span>
+      <span class="skill-tag">Information Architecture</span>
+      <span class="skill-tag">Visual Design</span>
+      <span class="skill-tag">Motion Design</span>
+      <span class="skill-tag">Component Libraries</span>
+      <span class="skill-tag">Accessibility</span>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="section-label">Testimonials</div>
+  <h2 class="section-title">What collaborators say.</h2>
+  <div class="testimonials-grid">
+    <div class="testimonial-card reveal">
+      <span class="quote-mark">"</span>
+      <blockquote>Aria redefined how our users interact with financial data. The redesign led to a 38% drop in support tickets and genuinely delighted our power users.</blockquote>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:var(--accent)">RK</div>
+        <div>
+          <div class="author-name">Rishi Kapoor</div>
+          <div class="author-role">CPO · FinFlow</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal" style="transition-delay:.1s">
+      <span class="quote-mark">"</span>
+      <blockquote>She has a rare gift for making technically complex products feel effortless. Our design system has scaled to 6 teams thanks to her foundational work.</blockquote>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:#22A45D">SN</div>
+        <div>
+          <div class="author-name">Sara Nair</div>
+          <div class="author-role">Head of Design · Orbit</div>
+        </div>
+      </div>
+    </div>
+    <div class="testimonial-card reveal" style="transition-delay:.2s">
+      <span class="quote-mark">"</span>
+      <blockquote>Working with Aria felt like having a design partner who understood both the user's heart and the engineer's mind. Truly exceptional output every sprint.</blockquote>
+      <div class="testimonial-author">
+        <div class="author-avatar" style="background:#9B59B6">AM</div>
+        <div>
+          <div class="author-name">Arjun Menon</div>
+          <div class="author-role">Founder · Mindful</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div class="cta-banner reveal" id="contact">
+  <h2>Have a project in mind?<br>Let's make it real.</h2>
+  <p>Currently open for freelance projects and full-time roles.</p>
+  <a href="mailto:aria@example.com" class="btn-primary">Start a conversation →</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <p>Aria Mehta</p>
+      <span>Product Designer based in Mumbai, India.<br>Available worldwide.</span>
+    </div>
+    <div class="footer-links">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#process">Process</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-links">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#">Dribbble</a></li>
+        <li><a href="#">Behance</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Read.cv</a></li>
+        <li><a href="#">Twitter / X</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 Aria Mehta · Designed in Figma · Built with precision</p>
+    <p>Mumbai, India · Available worldwide</p>
+  </div>
+</footer>
+
+<script>
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 20);
+});
+
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
